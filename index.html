@@ -433,7 +433,7 @@
             container.innerHTML = filteredData
                 .slice(0, 10) // Limit to 10 results
                 .map((santri, index) => {
-                    const genderIcon = santri.gender === 'P' ? '👩' : '👨';
+                    const genderIcon = santri.gender === 'P' ? '' : '';
                     const genderText = santri.gender === 'P' ? 'Putri' : 'Putra';
                     
                     return `
