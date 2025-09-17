@@ -455,7 +455,7 @@
 
         function selectSantri(index) {
             const santri = filteredData[index];
-            const genderIcon = santri.gender === 'P' ? '👩' : '👨';
+            const genderIcon = santri.gender === 'P' ? '' : '';
             const genderText = santri.gender === 'P' ? 'Putri' : 'Putra';
             
             document.getElementById('searchInput').value = santri.nama;
