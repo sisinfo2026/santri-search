@@ -406,11 +406,9 @@
             container.innerHTML = filteredData
                 .slice(0, 10) // Limit to 10 results
                 .map((santri, index) => {
-                    const genderText = santri.gender === 'P' ? 'Putri' : 'Putra';
-                    
                     return `
                         <div class="result-item" data-index="${index}" onclick="selectSantri(${index})">
-                            <strong>${santri.nama}</strong> <small>(${genderText})</small><br>
+                            <strong>${santri.nama}</strong> <small>(${santri.gender})</small><br>
                             <small>ID: ${santri.id_santri} | Kelas: ${santri.kelas_sekarang} | Ayah: ${santri.nama_ayah}</small>
                         </div>
                     `;
@@ -427,14 +425,13 @@
 
         function selectSantri(index) {
             const santri = filteredData[index];
-            const genderText = santri.gender === 'P' ? 'Putri' : 'Putra';
             
             document.getElementById('searchInput').value = santri.nama;
             document.getElementById('detailNama').textContent = santri.nama;
             document.getElementById('detailId').textContent = santri.id_santri;
             document.getElementById('detailKelas').textContent = santri.kelas_sekarang;
             document.getElementById('detailAyah').textContent = santri.nama_ayah;
-            document.getElementById('detailGender').textContent = genderText;
+            document.getElementById('detailGender').textContent = santri.gender;
             
             document.getElementById('detailsCard').style.display = 'block';
             hideResults();
