@@ -228,17 +228,17 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎓 Pencarian Data Santri</h1>
+            <h1>Pencarian Data Santri</h1>
             <p>sisinfo2026</p>
         </div>
 
         <div class="form-container">
             <div class="stats" id="stats">
-                <strong>📊 Loading data santri...</strong>
+                <strong>Loading data santri...</strong>
             </div>
 
             <div class="form-group">
-                <label for="searchInput">🔍 Cari Nama Santri:</label>
+                <label for="searchInput">Cari Nama Santri:</label>
                 <div class="search-container">
                     <input type="text" id="searchInput" class="search-input" placeholder="Ketik nama santri..." autocomplete="off">
                     <span class="search-icon">🔍</span>
@@ -247,7 +247,7 @@
             </div>
 
             <div class="details-card" id="detailsCard">
-                <h3>📋 Detail Santri</h3>
+                <h3>Detail Santri</h3>
                 <div class="detail-item">
                     <span class="detail-label">Nama Lengkap:</span>
                     <span class="detail-value" id="detailNama">-</span>
@@ -357,41 +357,14 @@
             return result;
         }
 
-        // Data demo sebagai fallback
+        // Tidak menggunakan data demo - hanya load dari CSV
         function loadDemoData() {
-            santriData = [
-                { id_santri: "001", nama: "Ahmad Fauzi", gender: "L", nama_ayah: "Budi Santoso", kelas_sekarang: "X-A" },
-                { id_santri: "002", nama: "Muhammad Rizki", gender: "L", nama_ayah: "Slamet Riyadi", kelas_sekarang: "X-B" },
-                { id_santri: "003", nama: "Abdul Rahman", gender: "L", nama_ayah: "Ahmad Yusuf", kelas_sekarang: "XI-A" },
-                { id_santri: "004", nama: "Fatimah Zahra", gender: "P", nama_ayah: "Ibrahim Ahmad", kelas_sekarang: "X-A" },
-                { id_santri: "005", nama: "Aisyah Nurhaliza", gender: "P", nama_ayah: "Suryanto Wijaya", kelas_sekarang: "XI-B" }
-            ];
-            updateStats();
-            
-            const stats = document.getElementById('stats');
-            stats.innerHTML = '<strong>⚠️ Menggunakan data demo - Upload santri.csv untuk data asli</strong>';
-        }
-
-        // Process Google Sheets API data
-        function processGoogleSheetsData(values) {
-            const result = [];
-            
-            for (let i = 1; i < values.length; i++) { // Skip header
-                if (values[i][2]) {
-                    result.push({
-                        id: values[i][0] || '',
-                        nama: values[i][2] || '',
-                        ayah: values[i][4] || '',
-                        kelas: values[i][5] || ''
-                    });
-                }
-            }
-            return result;
+            showError('File santri.csv tidak ditemukan di folder data/');
         }
 
         function updateStats() {
             const stats = document.getElementById('stats');
-            stats.innerHTML = `<strong>📊 Total ${santriData.length} santri terdaftar</strong>`;
+            stats.innerHTML = `<strong>Total ${santriData.length} santri terdaftar</strong>`;
         }
 
         function showError(message) {
@@ -400,7 +373,7 @@
             errorElement.style.display = 'block';
             
             const stats = document.getElementById('stats');
-            stats.innerHTML = '<strong>❌ Gagal memuat data</strong>';
+            stats.innerHTML = '<strong>Gagal memuat data</strong>';
         }
 
         function searchSantri(query) {
@@ -433,12 +406,11 @@
             container.innerHTML = filteredData
                 .slice(0, 10) // Limit to 10 results
                 .map((santri, index) => {
-                    const genderIcon = santri.gender === 'P' ? '' : '';
                     const genderText = santri.gender === 'P' ? 'Putri' : 'Putra';
                     
                     return `
                         <div class="result-item" data-index="${index}" onclick="selectSantri(${index})">
-                            <strong>${genderIcon} ${santri.nama}</strong> <small>(${genderText})</small><br>
+                            <strong>${santri.nama}</strong> <small>(${genderText})</small><br>
                             <small>ID: ${santri.id_santri} | Kelas: ${santri.kelas_sekarang} | Ayah: ${santri.nama_ayah}</small>
                         </div>
                     `;
@@ -455,7 +427,6 @@
 
         function selectSantri(index) {
             const santri = filteredData[index];
-            const genderIcon = santri.gender === 'P' ? '' : '';
             const genderText = santri.gender === 'P' ? 'Putri' : 'Putra';
             
             document.getElementById('searchInput').value = santri.nama;
@@ -463,12 +434,7 @@
             document.getElementById('detailId').textContent = santri.id_santri;
             document.getElementById('detailKelas').textContent = santri.kelas_sekarang;
             document.getElementById('detailAyah').textContent = santri.nama_ayah;
-            
-            // Update gender info
-            const genderDetail = document.getElementById('detailGender');
-            if (genderDetail) {
-                genderDetail.textContent = `${genderIcon} ${genderText}`;
-            }
+            document.getElementById('detailGender').textContent = genderText;
             
             document.getElementById('detailsCard').style.display = 'block';
             hideResults();
