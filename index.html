@@ -125,13 +125,24 @@
         }
 
         .details-card {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             border-radius: 12px;
             padding: 25px;
             margin-top: 25px;
             color: white;
             display: none;
             animation: slideIn 0.3s ease;
+        }
+
+        .details-card.male {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .details-card.female {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .details-card.default {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         @keyframes slideIn {
@@ -425,6 +436,20 @@
 
         function selectSantri(index) {
             const santri = filteredData[index];
+            const detailsCard = document.getElementById('detailsCard');
+            
+            // Reset classes
+            detailsCard.className = 'details-card';
+            
+            // Set background based on gender
+            const gender = santri.gender.toLowerCase();
+            if (gender.includes('laki') || gender === 'l' || gender === 'male') {
+                detailsCard.classList.add('male');
+            } else if (gender.includes('perempuan') || gender === 'p' || gender === 'female') {
+                detailsCard.classList.add('female');
+            } else {
+                detailsCard.classList.add('default');
+            }
             
             document.getElementById('searchInput').value = santri.nama;
             document.getElementById('detailNama').textContent = santri.nama;
@@ -433,7 +458,7 @@
             document.getElementById('detailAyah').textContent = santri.nama_ayah;
             document.getElementById('detailGender').textContent = santri.gender;
             
-            document.getElementById('detailsCard').style.display = 'block';
+            detailsCard.style.display = 'block';
             hideResults();
         }
 
